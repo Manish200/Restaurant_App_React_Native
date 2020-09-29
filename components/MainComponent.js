@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import Menu from './MenuComponent';
 import Dishdetail from './DIshdetailComponent';
-import { View } from 'react-native';
+import { View, Platform } from 'react-native';
+import { createStackNavigator } from 'react-navigation';
 import { DISHES } from '../shared/dishes';
 class Main extends Component {
   constructor(props) {
@@ -11,15 +12,30 @@ class Main extends Component {
         selectedDish: null
       };
   }
-  onDishSelect(dishId) {
-    this.setState({selectedDish: dishId})
-}
+
+
+   
   render() {
- 
+    const MenuNavigator = createStackNavigator({
+      Menu: { screen: Menu },
+      Dishdetail: { screen: Dishdetail }
+  },
+  {
+      initialRouteName: 'Menu',
+      navigationOptions: {
+          headerStyle: {
+              backgroundColor: "#512DA8"
+          },
+          headerTintColor: '#fff',
+          headerTitleStyle: {
+              color: "#fff"            
+          }
+      }
+  }
+  );
     return (
-        <View style={{flex:1}}>
-        <Menu dishes={this.state.dishes} onPress={(dishId) => this.onDishSelect(dishId)} />
-        <Dishdetail  dish={this.state.dishes.filter((dish) => dish.id === this.state.selectedDish)[0]} />
+        <View style={{flex:1, paddingTop: Platform.OS === 'ios' ? 0 : Expo.Constants.statusBarHeight }}>
+        <MenuNavigator />
     </View>
     );
   }
