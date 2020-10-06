@@ -1,41 +1,44 @@
 import React, { Component } from 'react';
-import Menu from './MenuComponent';
-import Dishdetail from './DIshdetailComponent';
 import { View, Platform, Text, ScrollView, Image, StyleSheet } from 'react-native';
 import { createStackNavigator, createDrawerNavigator, DrawerItems, SafeAreaView } from 'react-navigation';
 import { Icon } from 'react-native-elements';
-import { DISHES } from '../shared/dishes';
 import Home from './HomeComponent';
 import About from './AboutComponent';
 import Contact from './ContactComponent';
+// import Menu from './MenuComponent';
+import Menu from './MenuComponent'
+import Dishdetail from './DIshdetailComponent';
+
+import { connect } from 'react-redux';
+import { fetchDishes, fetchComments, fetchPromos, fetchLeaders } from '../redux/ActionCreators';
 
 
-
-// import { Icon } from 'react-native-elements';
-
-const MenuNavigator = createStackNavigator({
-  Menu: { screen: Menu,
-    navigationOptions: ({ navigation }) => ({
-      headerLeft: <Icon name="menu" size={24} 
-      color= 'white'
-      onPress={ () => navigation.toggleDrawer() } />          
-    })  
-},
-  Dishdetail: { screen: Dishdetail }
-},
-{
-  initialRouteName: 'Menu', 
-  navigationOptions: {
-      headerStyle: {
-          backgroundColor: "#512DA8"
+const MenuNavigator = createStackNavigator(
+  {
+      Menu: { screen: Menu,
+          navigationOptions: ({ navigation }) => ({
+              headerLeft: <Icon name='menu' size={24}
+                  color='white'
+                  containerStyle={{paddingLeft: 10}}
+                  onPress={() => navigation.toggleDrawer()}
+                  />
+          })
       },
-      headerTintColor: '#fff',
-      headerTitleStyle: {
-          color: "#fff"            
+      Dishdetail: { screen: Dishdetail }
+  },
+  {
+    navigationOptions: {
+          headerStyle: {
+              backgroundColor: '#512DA8'
+          },
+          headerTintColor: '#fff',
+          headerTitleStyle: {
+              color: '#fff'
+          }
       }
-  }
-}
-);
+})
+
+
 
 const HomeNavigator = createStackNavigator({
   Home: { screen: Home,
@@ -204,15 +207,13 @@ const styles = StyleSheet.create({
 });
 
 class Main extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-        dishes: DISHES,
-        selectedDish: null
-      };
+
+  componentDidMount() {
+    this.props.fetchDishes();
+    this.props.fetchComments();
+    this.props.fetchPromos();
+    this.props.fetchLeaders();
   }
-
-
    
   render() {
 
@@ -223,5 +224,22 @@ class Main extends Component {
     );
   }
 }
+
+
+const mapStateToProps = state => {
+  return {
+    dishes: state.dishes,
+    comments: state.comments,
+    promotions: state.promotions,
+    leaders: state.leaders
+  }
+}
+
+const mapDispatchToProps = dispatch => ({
+  fetchDishes: () => dispatch(fetchDishes()),
+  fetchComments: () => dispatch(fetchComments()),
+  fetchPromos: () => dispatch(fetchPromos()),
+  fetchLeaders: () => dispatch(fetchLeaders()),
+})
   
-export default Main;
+export default connect(mapStateToProps, mapDispatchToProps)(Main);
