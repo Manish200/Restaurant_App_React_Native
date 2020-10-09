@@ -5,7 +5,7 @@ import { Icon } from 'react-native-elements';
 import Home from './HomeComponent';
 import About from './AboutComponent';
 import Contact from './ContactComponent';
-// import Menu from './MenuComponent';
+import Comments from './Comments';
 import Menu from './MenuComponent'
 import Dishdetail from './DIshdetailComponent';
 
@@ -24,7 +24,8 @@ const MenuNavigator = createStackNavigator(
                   />
           })
       },
-      Dishdetail: { screen: Dishdetail }
+      Dishdetail: { screen: Dishdetail },
+      Comments: { screen: Comments }
   },
   {
     navigationOptions: {
