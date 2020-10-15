@@ -166,3 +166,8 @@ export const addComment = (data) => ({
     type: ActionTypes.ADD_COMMENT,
     payload: data
 });
+
+export const deleteFavorite = (dishId) => ({
+    type: ActionTypes.DELETE_FAVORITE,
+    payload: dishId
+});
