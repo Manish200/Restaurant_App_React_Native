@@ -10,7 +10,7 @@ import {
 
 import { connect } from 'react-redux';
 import { baseUrl } from '../shared/baseUrl';
-
+import * as Animatable from 'react-native-animatable';
 const mapStateToProps = state => {
     return {
         dishes: state.dishes,
@@ -39,6 +39,7 @@ function RenderComments(props) {
     };
 
     return (
+        <Animatable.View animation="fadeInUp" duration={2000} delay={1000}>    
         <Card title='Comments' >
             <FlatList
                 data={comments}
@@ -46,6 +47,7 @@ function RenderComments(props) {
                 keyExtractor={item => item.dishId.toString()}
             />
         </Card>
+        </Animatable.View>
     );
 }
 
@@ -56,6 +58,7 @@ function RenderDish(props) {
     console.log("&&&& "+JSON.stringify(dish.id))
     if (dish != null) {
         return (
+            <Animatable.View animation="fadeInDown" duration={2000} delay={1000}>
             <Card
                 featuredTitle={dish.name}
                 image={{ uri: baseUrl + dish.image }}>
@@ -83,6 +86,7 @@ function RenderDish(props) {
                     />
                 </View>
             </Card>
+            </Animatable.View>
         );
     }
     else {
