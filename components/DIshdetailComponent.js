@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 // import { Text, View, ScrollView, FlatList } from 'react-native';
 import { Card, Icon } from 'react-native-elements';
 import { postFavorite } from '../redux/ActionCreators';
-import { Text, View, ScrollView, FlatList, Modal, StyleSheet, Button, Alert, PanResponder } from 'react-native';
+import { Text, View, ScrollView, FlatList, Modal, StyleSheet, Button, Alert, PanResponder,ToastAndroid } from 'react-native';
 
 import { connect } from 'react-redux';
 import { baseUrl } from '../shared/baseUrl';
@@ -49,18 +49,19 @@ function RenderComments(props) {
 
 
 function RenderDish(props) {
-
+    const navigate = props.navigate;
+    const dish = props.dish;
     const recognizeDrag = ({ moveX, moveY, dx, dy }) => {
         if ( dx < -200 )
             return true;
         else
             return false;
     }
-
     const panResponder = PanResponder.create({
         onStartShouldSetPanResponder: (e, gestureState) => {
             return true;
         },
+
         onPanResponderEnd: (e, gestureState) => {
             console.log("pan responder end", gestureState);
             if (recognizeDrag(gestureState))
@@ -79,12 +80,12 @@ function RenderDish(props) {
     })
 
 
-    const navigate = props.navigate;
-    const dish = props.dish;
-    console.log("&&&& "+JSON.stringify(dish.id))
     if (dish != null) {
+
+
         return (
-            <Animatable.View animation="fadeInDown" duration={2000} delay={1000} {...panResponder.panHandlers}>
+            <Animatable.View animation="fadeInDown" duration={2000} delay={1000}
+                {...panResponder.panHandlers}>
             <Card
                 featuredTitle={dish.name}
                 image={{ uri: baseUrl + dish.image }}>
